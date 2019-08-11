@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\wegopay.notification\wegopay.notification.csproj" />
     <ProjectReference Include="..\userprofile.core\userprofile.core.csproj" />
     <ProjectReference Include="..\userprofile.persistence\userprofile.persistence.csproj" />
   </ItemGroup>

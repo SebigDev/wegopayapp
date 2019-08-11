@@ -4,16 +4,23 @@ using System.Text;
 
 namespace userprofile.entities.RequestResponse
 {
-   public  class ResponseDataObject<T> where T: class
+   public  class ResponseDataObject 
     {
-        public ResponseDataObject()
-        {
-            Status = false;
-        }
-
         public string Message { get; set; }
-        public T Data { get; set; }
-
+  
         public bool Status { get; set; }
     }
+
+
+    public class ResponseDataObject<T> : ResponseDataObject 
+    {
+       public  T Data { get; set; }
+
+    }
+
+    public class ResponseDataObjectList<T> : ResponseDataObject
+    {
+        public List<T> DataList { get; set; }
+    }
+
 }

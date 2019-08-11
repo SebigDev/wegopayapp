@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using userprofile.core;
 using userprofile.persistence;
+using wegopay.notification;
 
 namespace userprofile.api
 {
@@ -37,8 +38,13 @@ namespace userprofile.api
 
             });
 
+
+            //Add Mail
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+
             services.AddOptions();
             services.AddUserProfileServices();
+            services.AddWegopayNotification();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

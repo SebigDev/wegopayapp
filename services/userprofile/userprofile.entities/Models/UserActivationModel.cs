@@ -10,7 +10,8 @@ namespace userprofile.entities.Models
         public long UserModelId { get; set; }
         public string ActivationCode { get; set; }
         public DateTime SentOn { get; set; }
-        public DateTime ActivatedOn { get; set; }
+        public DateTime? ActivatedOn { get; set; }
+        public DateTime ExpiresAt { get; set; }
         public bool ComfirmedActivation { get; set; }
     }
 }

@@ -22,13 +22,22 @@ namespace userprofile.api.Controllers
 
         [HttpPost]
         [Route("[action]")]
+        [Produces(typeof(ResponseDataObject))]
         public async Task<IActionResult> AdminAuthentication(string emailAddress, string password)
         {
             try
             {
                 var adminAuth = await _userManagerService.AdminAuthentication(emailAddress, password);
-                if (adminAuth) return Ok(adminAuth);
-                return Ok(adminAuth);
+                if (adminAuth)
+                {
+                    var response = new ResponseDataObject
+                    {
+                        Message = "Authenticated",
+                        Status = adminAuth,
+                    };
+                    return Ok(response);
+                }
+                return Unauthorized();
             }
             catch (Exception ex)
             {
@@ -68,9 +77,8 @@ namespace userprofile.api.Controllers
                 }
                 if (registerResult == null)
                 {
-                    var resp = new ResponseDataObject<RegistrationResponse>
+                    var resp = new ResponseDataObject
                     {
-                        Data = null,
                         Message = "User registration failed, Please contact Admin",
                         Status = true,
 
@@ -96,9 +104,8 @@ namespace userprofile.api.Controllers
 
                 if (loginResult == null)
                 {
-                    var res = new ResponseDataObject<LoginResponse>
+                    var res = new ResponseDataObject
                     {
-                        Data = null,
                         Message = "Authentication failed!",
                         Status = false,
                     };
@@ -136,7 +143,7 @@ namespace userprofile.api.Controllers
 
         [HttpPost]
         [Route("[action]")]
-        [Produces(typeof(bool))]
+        [Produces(typeof(ResponseDataObject))]
         public async Task<IActionResult> UserActivation(UserActivationDto model)
         {
             try
@@ -144,7 +151,12 @@ namespace userprofile.api.Controllers
                 var activationResult = await _userManagerService.UserActivation(model);
                 if (activationResult)
                 {
-                    return Ok($"User with {model.UserId} activated successfully");
+                    var response = new ResponseDataObject
+                    {
+                        Message = $"User with {model.UserId} activated successfully",
+                        Status = activationResult,
+                    };
+                    return Ok(response);
                 }
                 return Unauthorized();
             }
@@ -153,5 +165,29 @@ namespace userprofile.api.Controllers
                 return BadRequest(ex);
             }
         }
+
+
+        [HttpGet]
+        [Route("[action]")]
+        [Produces(typeof(ResponseDataObjectList<UserModelDto>))]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            try
+            {
+                var allUsers = await _userManagerService.RetrieveUsers();
+                var response = new ResponseDataObjectList<UserModelDto>
+                {
+                   DataList = allUsers.ToList(),
+                   Message = $"{allUsers.Count()} users retrieved successfully.",
+                   Status = true,
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
     }
 }

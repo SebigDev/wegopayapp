@@ -15,9 +15,10 @@ namespace userprofile.core.Managers.UserManager
         Task<RegistrationResponse> UserRegistration(RegisterUserModelDto modelDto);
         Task<bool> UserActivation(UserActivationDto activationDto);
         Task<bool> AdminAuthentication(string EmailAddress, string password);
-
         Task<bool> IsActivated(Expression<Func<UserModel, bool>> expression);
-
         Task<UserModel> CheckUserExists(Expression<Func<UserModel, bool>> expression);
+
+        Task<IEnumerable<UserModelDto>> RetrieveUsers();
+        Task<UserModelDto> RetrieveUserByUserId(long Id);
     }
 }
